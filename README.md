@@ -2,6 +2,10 @@
 
 TNGradientPickerSlider is a ready-to-use AppKit component that let your users select multiple colors to build a gradient for your macOS application.
 
+[![](https://github.com/frederik-jacques/TNGradientPickerSlider/actions/workflows/swift.yml/badge.svg)](https://github.com/frederik-jacques/TNGradientPickerSlider/actions/workflows/swift.yml/badge.svg)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Ffrederik-jacques%2FTNGradientPickerSlider%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/frederik-jacques/TNGradientPickerSlider)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Ffrederik-jacques%2FTNGradientPickerSlider%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/frederik-jacques/TNGradientPickerSlider)
+
 ## ✨ Features
 
 - Add multiple colors to build your gradient by clicking the track
