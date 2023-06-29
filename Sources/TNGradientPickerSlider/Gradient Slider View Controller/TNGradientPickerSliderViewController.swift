@@ -7,14 +7,14 @@
 
 import Cocoa
 
-public protocol GradientSliderViewControllerDelegate: AnyObject {
+public protocol TNGradientSliderViewControllerDelegate: AnyObject {
     func gradientSliderViewController(_ viewController: TNGradientPickerSliderViewController, didUpdate gradientColors: [TNGradientColor])
 }
 
 public final class TNGradientPickerSliderViewController: NSViewController {
     
     // MARK: - Properties
-    public weak var delegate: GradientSliderViewControllerDelegate?
+    public weak var delegate: TNGradientSliderViewControllerDelegate?
 
     /// The current colors on the track, sorted by their location (from 0 to 1)
     public var gradientColors: [TNGradientColor] { gradientTrackView.sortedGradientColors }
@@ -48,7 +48,11 @@ public final class TNGradientPickerSliderViewController: NSViewController {
         setupView()
     }
     
+    
     // MARK: - Public methods
+    public func update(gradientColors: [TNGradientColor]) {
+        gradientTrackView.update(gradientColors: gradientColors)
+    }
 
     // MARK: - Private methods
     private func showColorPicker(on handleView: TNTrackHandleView) {

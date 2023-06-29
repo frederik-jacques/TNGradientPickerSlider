@@ -70,6 +70,10 @@ final class TNGradientSliderView: NSView {
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)
         
+        // Do not animate the changes when the view is resized
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+                
         let cornerRadius = bounds.height / 2
         
         transparantPatterLayer?.cornerRadius = cornerRadius
@@ -80,10 +84,16 @@ final class TNGradientSliderView: NSView {
         gradientLayer.frame = actualRectangle
         gradientMaskLayer.frame = CGRect(origin: .zero, size: actualRectangle.size)
         borderLayer.frame = actualRectangle
+        CATransaction.commit()
         
+        // If it's the first time, create the handle views now the view has the correct dimensions
         createHandleViewsIfNeeded()
+        
+        // If the view is being resized, we need to update the handle views to their new
+        // relative origin.
+        positionHandleViews()
     }
-    
+        
     override func mouseDown(with event: NSEvent) {
         super.mouseDown(with: event)
         
@@ -244,6 +254,23 @@ final class TNGradientSliderView: NSView {
     }
 
     // MARK: - Public methods
+    func update(gradientColors: [TNGradientColor]) {
+        didAddInitialHandleViews = true
+        
+        // Remove the old track handles
+        trackHandleViews.forEach({ $0.removeFromSuperview() })
+        trackHandleViews = []
+        
+        // Save the new gradient colors
+        self.gradientColors = gradientColors
+        
+        // Create the handles
+        for gradientColor in self.gradientColors {
+            print("§§ Create gradient color \(gradientColor.id)")
+            createHandleView(gradientColor: gradientColor, selectOnCreation: false)
+        }
+    }
+    
     func updateTrackGradientColor() {
         // Don't add implicit animations when setting the colors / locations
         CATransaction.begin()
@@ -255,8 +282,6 @@ final class TNGradientSliderView: NSView {
     }
     
     // MARK: - Private methods
-    
-    
     private func createHandleViewsIfNeeded() {
         guard !didAddInitialHandleViews else { return }
         didAddInitialHandleViews = true
@@ -268,11 +293,7 @@ final class TNGradientSliderView: NSView {
     
     private func createHandleView(gradientColor: TNGradientColor, selectOnCreation: Bool = true) {
         // Create the handle view and position it correctly on the view
-        let xPosition: CGFloat = actualRectangle.origin.x + (gradientColor.location * actualRectangle.width) - configuration.colorHandle.radius
-        let yPosition: CGFloat = -(configuration.colorHandle.size.height - bounds.height) * 0.5
-        let position = CGPoint(x: xPosition, y: yPosition)
-        
-        let handleView = TNTrackHandleView(configuration: configuration.colorHandle, gradientColor: gradientColor, origin: position)
+        let handleView = TNTrackHandleView(configuration: configuration.colorHandle, gradientColor: gradientColor, origin: calculatePosition(gradientColor: gradientColor))
         addSubview(handleView)
         
         // Add it to the list of handles
@@ -281,6 +302,21 @@ final class TNGradientSliderView: NSView {
         // Select the new handle view if needed
         if selectOnCreation {
             update(state: .selected, for: handleView)
+        }
+        
+        // Update the trackbar to reflect the new gradient color
+        updateTrackGradientColor()
+    }
+    
+    private func calculatePosition(gradientColor: TNGradientColor) -> CGPoint {
+        let xPosition: CGFloat = actualRectangle.origin.x + (gradientColor.location * actualRectangle.width) - configuration.colorHandle.radius
+        let yPosition: CGFloat = -(configuration.colorHandle.size.height - bounds.height) * 0.5
+        return CGPoint(x: xPosition, y: yPosition)
+    }
+    
+    private func positionHandleViews() {
+        for trackHandle in trackHandleViews {
+            trackHandle.update(origin: calculatePosition(gradientColor: trackHandle.gradientColor))
         }
         
         // Update the trackbar to reflect the new gradient color
