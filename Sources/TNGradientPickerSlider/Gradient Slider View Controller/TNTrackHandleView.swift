@@ -37,7 +37,13 @@ final class TNTrackHandleView: NSView {
     @available(*, unavailable)
     required init?(coder: NSCoder) { fatalError("no-op") }
     
-    // MARK: - Public methods    
+    // MARK: - Public methods
+    func update(origin: CGPoint) {
+        var updatedFrame = frame
+        updatedFrame.origin = origin
+        self.frame = updatedFrame
+    }
+    
     func update(state: TNGradientColor.State) {
         gradientColor.update(state: state)
     }
