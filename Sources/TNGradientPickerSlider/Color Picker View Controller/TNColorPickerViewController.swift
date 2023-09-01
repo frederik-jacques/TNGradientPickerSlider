@@ -7,7 +7,7 @@
 
 import Cocoa
 
-protocol TNColorPickerViewControllerDelegate: AnyObject {
+public protocol TNColorPickerViewControllerDelegate: AnyObject {
     func colorPickerViewController(_ viewController: TNColorPickerViewController, didUpdate color: NSColor)
 }
 
@@ -15,14 +15,14 @@ protocol TNColorPickerDataSource: AnyObject {
     func viewWantsColorInformation() -> RGBA
 }
 
-final class TNColorPickerViewController: NSViewController {
+public final class TNColorPickerViewController: NSViewController {
 
-    enum ColorMode {
+    public enum ColorMode {
         case rgb
         case hsb
     }
     
-    weak var delegate: TNColorPickerViewControllerDelegate?
+    public weak var delegate: TNColorPickerViewControllerDelegate?
     
     @IBOutlet weak var containerView: NSView!
     @IBOutlet weak var saturationBrightnessView: TNSaturationBrightnessView!
@@ -68,7 +68,7 @@ final class TNColorPickerViewController: NSViewController {
     @available(*, unavailable)
     required init?(coder: NSCoder) { fatalError("no-op") }
         
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         
         setupContainerView()

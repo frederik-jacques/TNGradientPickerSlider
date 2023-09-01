@@ -111,7 +111,7 @@ extension TNGradientPickerSliderViewController: TNGradientTrackViewDelegate {
 // MARK: - TNColorPickerViewControllerDelegate
 extension TNGradientPickerSliderViewController: TNColorPickerViewControllerDelegate {
     
-    func colorPickerViewController(_ viewController: TNColorPickerViewController, didUpdate color: NSColor) {
+    public func colorPickerViewController(_ viewController: TNColorPickerViewController, didUpdate color: NSColor) {
         guard let handleViewPickingColor else { return }
         
         // Update the picked color for the handle view
