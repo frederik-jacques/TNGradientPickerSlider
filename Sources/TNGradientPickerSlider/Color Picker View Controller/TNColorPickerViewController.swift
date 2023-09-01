@@ -7,7 +7,7 @@
 
 import Cocoa
 
-protocol TNColorPickerViewControllerDelegate: AnyObject {
+public protocol TNColorPickerViewControllerDelegate: AnyObject {
     func colorPickerViewController(_ viewController: TNColorPickerViewController, didUpdate color: NSColor)
 }
 
@@ -15,14 +15,16 @@ protocol TNColorPickerDataSource: AnyObject {
     func viewWantsColorInformation() -> RGBA
 }
 
-final class TNColorPickerViewController: NSViewController {
+public final class TNColorPickerViewController: NSViewController {
 
-    enum ColorMode {
+    public enum ColorMode {
         case rgb
         case hsb
     }
     
-    weak var delegate: TNColorPickerViewControllerDelegate?
+    public weak var delegate: TNColorPickerViewControllerDelegate?
+    
+    public var onColorDidChange: ((NSColor) -> Void)?
     
     @IBOutlet weak var containerView: NSView!
     @IBOutlet weak var saturationBrightnessView: TNSaturationBrightnessView!
@@ -46,7 +48,7 @@ final class TNColorPickerViewController: NSViewController {
         return RGBA(r: rgb.red, g: rgb.green, b: rgb.blue, a: alpha)
     }
         
-    init(colorMode: ColorMode, color: NSColor, delegate: TNColorPickerViewControllerDelegate) {
+    public init(colorMode: ColorMode, color: NSColor, delegate: TNColorPickerViewControllerDelegate) {
         self.colorMode = colorMode
         
         // Convert the color we have received to HSB.
@@ -66,9 +68,9 @@ final class TNColorPickerViewController: NSViewController {
     }
     
     @available(*, unavailable)
-    required init?(coder: NSCoder) { fatalError("no-op") }
+    public required init?(coder: NSCoder) { fatalError("no-op") }
         
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         
         setupContainerView()
@@ -138,6 +140,8 @@ final class TNColorPickerViewController: NSViewController {
         if informDelegate {
             let color = NSColor(rgba: rgba)
             delegate?.colorPickerViewController(self, didUpdate: color)
+            
+            onColorDidChange?(color)
         }
     }
     
