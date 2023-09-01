@@ -46,7 +46,7 @@ public final class TNColorPickerViewController: NSViewController {
         return RGBA(r: rgb.red, g: rgb.green, b: rgb.blue, a: alpha)
     }
         
-    init(colorMode: ColorMode, color: NSColor, delegate: TNColorPickerViewControllerDelegate) {
+    public init(colorMode: ColorMode, color: NSColor, delegate: TNColorPickerViewControllerDelegate) {
         self.colorMode = colorMode
         
         // Convert the color we have received to HSB.
@@ -66,7 +66,7 @@ public final class TNColorPickerViewController: NSViewController {
     }
     
     @available(*, unavailable)
-    required init?(coder: NSCoder) { fatalError("no-op") }
+    public required init?(coder: NSCoder) { fatalError("no-op") }
         
     public override func viewDidLoad() {
         super.viewDidLoad()
