@@ -24,6 +24,8 @@ public final class TNColorPickerViewController: NSViewController {
     
     public weak var delegate: TNColorPickerViewControllerDelegate?
     
+    public var onColorDidChange: ((NSColor) -> Void)?
+    
     @IBOutlet weak var containerView: NSView!
     @IBOutlet weak var saturationBrightnessView: TNSaturationBrightnessView!
     @IBOutlet weak var hueSliderView: TNHueSliderView!
@@ -138,6 +140,8 @@ public final class TNColorPickerViewController: NSViewController {
         if informDelegate {
             let color = NSColor(rgba: rgba)
             delegate?.colorPickerViewController(self, didUpdate: color)
+            
+            onColorDidChange?(color)
         }
     }
     
